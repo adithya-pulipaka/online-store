@@ -38,18 +38,28 @@ const useCartInfo = () => {
     dispatch({ type: "add", payload: product });
   };
 
-  const removeFromCart = (product) => {
-    dispatch({ type: "remove", payload: product });
+  const reduceFromCart = (id) => {
+    dispatch({ type: "reduce", payload: id });
+  };
+
+  const removeFromCart = (id) => {
+    dispatch({ type: "remove", payload: id });
   };
 
   const clearCart = () => {
     dispatch({ type: "clear" });
   };
 
+  const getItemCount = (id) => {
+    return state.products.find((item) => item.id === id)?.count || 0;
+  };
+
   return {
     state,
     addToCart,
+    reduceFromCart,
     removeFromCart,
     clearCart,
+    getItemCount,
   };
 };

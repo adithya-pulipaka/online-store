@@ -5,7 +5,6 @@ import { useCart } from "../hooks/useCart";
 import { Container } from "@mui/material";
 
 export default function Home({ data }) {
-  const cart = useCart();
   return (
     <div>
       <Head>
@@ -14,9 +13,7 @@ export default function Home({ data }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Container>
-        <Products list={data}></Products>
-      </Container>
+      <Products list={data}></Products>
     </div>
   );
 }

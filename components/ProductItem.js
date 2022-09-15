@@ -14,20 +14,49 @@ import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 import React, { useState } from "react";
 import { useCart } from "../hooks/useCart";
 
+const ADDED_TO_CART = {
+  enabled: true,
+  message: "Added to Cart",
+  severity: "success",
+};
+const REMOVED_FROM_CART = {
+  enabled: true,
+  message: "Removed from Cart",
+  severity: "error",
+};
+
 const ProductItem = ({ details }) => {
-  const [openNotif, setOpenNotif] = useState(false);
+  const [notif, setNotif] = useState({
+    enabled: false,
+    message: "",
+    severity: "success",
+  });
   const cart = useCart();
+  const count = cart.getItemCount(details.id);
 
   const addToCart = () => {
-    cart.addToCart(details);
-    setOpenNotif(true);
+    const {
+      id,
+      price,
+      productName,
+      rating,
+      urls: { small },
+    } = details;
+    cart.addToCart({ id, price, productName, rating, small });
+    setNotif(ADDED_TO_CART);
+  };
+
+  const removeFromCart = () => {
+    const { id } = details;
+    cart.reduceFromCart(id);
+    setNotif(REMOVED_FROM_CART);
   };
 
   const handleClose = (event, reason) => {
     if (reason === "clickaway") {
       return;
     }
-    setOpenNotif(false);
+    setNotif((prev) => ({ ...prev, enabled: false }));
   };
   return (
     <>
@@ -69,7 +98,7 @@ const ProductItem = ({ details }) => {
             />
           </Box>
           <Typography sx={{ fontWeight: "bold", color: "blue" }}>
-            {details.price}
+            ${details.price}
           </Typography>
         </CardContent>
         <CardActions
@@ -81,26 +110,48 @@ const ProductItem = ({ details }) => {
             justifyContent: "space-evenly",
           }}
         >
-          <Button
-            variant="contained"
-            size="small"
-            endIcon={<AddShoppingCartIcon />}
-            onClick={(e) => addToCart(e)}
-          >
-            Add to Cart
-          </Button>
-          {/* <Typography sx={{ borderBottom: "1px solid black" }}>
-            {cartCount > 0 ? cartCount : ""}
-          </Typography> */}
+          {count == 0 && (
+            <Button
+              variant="contained"
+              size="small"
+              endIcon={<AddShoppingCartIcon />}
+              onClick={(e) => addToCart(e)}
+            >
+              Add to Cart
+            </Button>
+          )}
+          {count > 0 && (
+            <Box sx={{ display: "flex" }}>
+              <Button
+                variant="outlined"
+                sx={{ marginRight: 2 }}
+                size="small"
+                onClick={(e) => removeFromCart(e)}
+              >
+                -
+              </Button>
+              <Typography sx={{ borderBottom: "1px solid black" }}>
+                {count > 0 ? count : ""}
+              </Typography>
+              <Button
+                variant="outlined"
+                sx={{ marginLeft: 2 }}
+                size="small"
+                onClick={(e) => addToCart(e)}
+              >
+                +
+              </Button>
+            </Box>
+          )}
         </CardActions>
         <Snackbar
-          open={openNotif}
+          open={notif.enabled}
           autoHideDuration={1000}
           anchorOrigin={{ vertical: "bottom", horizontal: "right" }}
           onClose={handleClose}
         >
-          <Alert severity="success" variant="filled">
-            Added to Cart
+          <Alert severity={notif.severity} variant="filled">
+            {notif.message}
           </Alert>
         </Snackbar>
       </Card>
