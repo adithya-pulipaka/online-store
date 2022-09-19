@@ -6,11 +6,15 @@ import {
   Typography,
   IconButton,
   Tooltip,
+  Button,
+  Link,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useCart } from "../hooks/useCart";
 import CloseIcon from "@mui/icons-material/Close";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import OrderSummary from "../components/OrderSummary";
 
 const EMPTY_CART = (
   <>
@@ -22,6 +26,7 @@ const DELIVERY = 5;
 
 const CartDetails = () => {
   const cart = useCart();
+  const router = useRouter();
 
   const subTotal = cart.state.products
     .map((item) => item.count * item.price)
@@ -106,6 +111,12 @@ const CartDetails = () => {
             })}
           </Box>
           <Box sx={{ width: "30%" }}>
+            <OrderSummary
+              isCheckout={false}
+              onDecision={() => router.push("/checkout")}
+            ></OrderSummary>
+          </Box>
+          {/* <Box sx={{ width: "30%" }}>
             <Typography
               variant="h4"
               sx={{
@@ -149,7 +160,16 @@ const CartDetails = () => {
                 ${orderDetails.total}
               </Typography>
             </Box>
-          </Box>
+            <Box sx={{ textAlign: "center", marginTop: 3 }}>
+              <Button
+                variant="contained"
+                color={"secondary"}
+                onClick={() => router.push("/checkout")}
+              >
+                Checkout
+              </Button>
+            </Box>
+          </Box> */}
         </Box>
       )}
     </>

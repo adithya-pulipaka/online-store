@@ -72,7 +72,7 @@ const CartDrawer = ({ open, onClose }) => {
                   color={"secondary"}
                   onClick={() => navigateToCheckout()}
                 >
-                  Go To Checkout
+                  View Cart
                 </Button>
               </Box>
             )}
