@@ -3,7 +3,7 @@ export function formatText(text) {
 }
 
 export function getRandomPriceFormat() {
-  return "$" + Math.floor(Math.random() * 100);
+  return Math.floor(Math.random() * 100);
 }
 
 export function getRandomRating() {

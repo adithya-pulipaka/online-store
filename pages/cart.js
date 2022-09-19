@@ -6,11 +6,21 @@ import {
   Typography,
   IconButton,
   Tooltip,
+<<<<<<< HEAD
+  Button,
+  Link,
+=======
+>>>>>>> master
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useCart } from "../hooks/useCart";
 import CloseIcon from "@mui/icons-material/Close";
 import Head from "next/head";
+<<<<<<< HEAD
+import { useRouter } from "next/router";
+import OrderSummary from "../components/OrderSummary";
+=======
+>>>>>>> master
 
 const EMPTY_CART = (
   <>
@@ -22,6 +32,7 @@ const DELIVERY = 5;
 
 const CartDetails = () => {
   const cart = useCart();
+  const router = useRouter();
 
   const subTotal = cart.state.products
     .map((item) => item.count * item.price)
@@ -106,49 +117,10 @@ const CartDetails = () => {
             })}
           </Box>
           <Box sx={{ width: "30%" }}>
-            <Typography
-              variant="h4"
-              sx={{
-                fontWeight: "bold",
-                textAlign: "center",
-                marginBottom: 4,
-                textDecoration: "underline",
-              }}
-            >
-              Order Summary
-            </Typography>
-            <Box sx={{ display: "flex" }}>
-              <Box sx={{ display: "flex", flexDirection: "column" }}>
-                <Typography sx={{ marginBottom: 1 }}>
-                  Subtotal ({orderDetails.count} items)
-                </Typography>
-                <Typography sx={{ marginBottom: 1 }}>Delivery</Typography>
-                <Typography sx={{ marginBottom: 1 }}>Taxes</Typography>
-              </Box>
-              <Box
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  marginLeft: "auto",
-                  textAlign: "right",
-                }}
-              >
-                <Typography sx={{ marginBottom: 1 }}>
-                  ${orderDetails.subTotal}
-                </Typography>
-                <Typography sx={{ marginBottom: 1 }}>$5</Typography>
-                <Typography sx={{ marginBottom: 1 }}>
-                  ${orderDetails.taxes}
-                </Typography>
-              </Box>
-            </Box>
-            <hr />
-            <Box sx={{ display: "flex" }}>
-              <Typography sx={{ fontWeight: "bold" }}>Total</Typography>
-              <Typography sx={{ fontWeight: "bold", marginLeft: "auto" }}>
-                ${orderDetails.total}
-              </Typography>
-            </Box>
+            <OrderSummary
+              isCheckout={false}
+              onDecision={() => router.push("/checkout")}
+            ></OrderSummary>
           </Box>
         </Box>
       )}
